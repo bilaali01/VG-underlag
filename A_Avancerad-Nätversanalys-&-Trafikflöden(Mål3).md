@@ -43,7 +43,7 @@ används på respektive skikt i TCP/IP-modellen.**
 
 ***  
 ### *VIKTIGT:* Jag kommer gå genom varje OSI-Layer 7-1 (uppifrån neråt).  
-***---Senario***: **Klient** `192.168.1.50/24` surfar till `https://example.com` via **Gateway:**`192.168.1.1` 
+***---Senario***: **Klient** `192.168.100.10/24` surfar till `https://example.com` via **Gateway:**`192.168.1.1` 
 
 #### ***OSI-Layer 7:** `Application-Layer.`* |> ***TCP/IP-Layer 4* `Application-Layer.`** 
 - **DNS:** Eftersom dator inte förstår våra bokstäver, utan bara siffror. Har vi en `DNS-server` (tabell) lagrar **`webbsida = Ip-address`**.  
@@ -87,7 +87,7 @@ Skyddar `Confidentiality` (gör data oläslig för utomstående).
 
 #### ***OSI-Layer 5:** `Session-Layer.`* |> ***TCP/IP-Layer 4* `Application-Layer.`**  
 
-- **socket:** Tänk dig du kan öppna flera flikar i din webbläsare. Du öppnar youtube i en flik, då kommer socket skriva såhär `(min pc ip:) 192.168.1.50:51234 (<-en öppen port i min dator) | (YT-sida Ip:)93.184.216.34:443 (<- Via 443-HTTPS-port-YTsida)`, sen öppnar du Netflex i ett annat flik så skriver socket `(min pc ip:) 192.168.1.50:51235 (<-en öppen port i min dator)| (NF-sida Ip:)94.174.116.25:443 (<- Via 443-HTTPS-Port-NFsida)`, som du märker jag kan ansluta mig till samma port från utsidan men använder olika portar på min dator. Påsåsätt alla dina flikar går inte in i varandra, allt är organiserar. Youtube tar rummet (porten **51234**) från din dator och Netflix tar rummet (porten **51235**) olika rum olika kontakter så det inte går in i varandra.  
+- **socket:** Tänk dig du kan öppna flera flikar i din webbläsare. Du öppnar youtube i en flik, då kommer socket skriva såhär `(min pc ip:) 192.168.100.10:51234 (<-en öppen port i min dator) | (YT-sida Ip:)93.184.216.34:443 (<- Via 443-HTTPS-port-YTsida)`, sen öppnar du Netflex i ett annat flik så skriver socket `(min pc ip:) 192.168.100.10:51235 (<-en öppen port i min dator)| (NF-sida Ip:)94.174.116.25:443 (<- Via 443-HTTPS-Port-NFsida)`, som du märker jag kan ansluta mig till samma port från utsidan men använder olika portar på min dator. Påsåsätt alla dina flikar går inte in i varandra, allt är organiserar. Youtube tar rummet (porten **51234**) från din dator och Netflix tar rummet (porten **51235**) olika rum olika kontakter så det inte går in i varandra.  
 
 - **Session:** När du öppnar en flik(hemsida) server skapar en session om dig där det sparar `username:bilal,kundvagn:tröja,Inloggad:ja`, server skikcar tillbaka en **`Session-ID (ses-92748229)`** som sparas i din webbläsare(Cookies),Nu varje gång din webläsare skickar en signal via **(socket)** skickas din (Cookie) automatiskt med så att hemsidan du surfar på känner igen dig sen tidigare. därför kan du se att saker du la i din kundvagn fortfarande finns kvar(tröja).  
 ***
@@ -160,7 +160,7 @@ En **`SUPERVIKTIGT`** när dina `intern ip` ska **nå WAN `internet`** då Inter
   **Så här går ett paket ut på internet:**
 
 1. Din enhet skickar paketet till din router. I paketet står **din enhets MAC-adress** som avsändare och **routerns MAC-adress** som mottagare.
-2. Routern byter din **privata IP** `(192.168.1.50/24)` mot din **publika IP** `(Gateway:192.168.1.1)`, som du fått från din **ISP** det kallas **NAT**.
+2. Routern byter din **privata IP** `(192.168.100.10/24)` mot din **publika IP** `(Gateway:192.168.1.1)`, som du fått från din **ISP** det kallas **NAT**.
 3. Routern tar bort den gamla MAC-adressen och sätter på en ny, med **sin egen WAN-MAC-adress** som avsändare. Sedan skickar den paketet vidare till **operatörens nästa router**.
 4. Efter det rörs inte IP-adresserna (din publika IP och mottagarens IP). De följer med hela vägen.
 5. På varje hopp, från router till router, byts MAC-adresserna ut mot nästa hopps(Router) MAC-adress.
@@ -198,3 +198,33 @@ Kopparkablar som **cat6** skicaks elektrisak pulsar som av,på,på,av osv..
   - **Wi-fi:** Mäts i **GHz** ju högre **GHz** deutå snabbare och stabilare blir uppkopplingen.  
   - **Mobilnät:** 4G,5G,6G osv.. ju högre siffra ju nyare generation, används utomhus, radiosignaler skicaks från en nära mast till dig och når din telefon.
 ***  
+***  
+***  
+Nu till uppgiten:  
+
+Saker du måste veta..
+- FF:FF:FF:FF:FF:FF = Stå i rummet och skrika, alla Enheter är codadae att svara på denna fråga.
+# vm  
+**Hypervisorn:** vNIC skapar och delar MAC: VM:VM:VM:11::11:11  
+
+När `Viretuell Maskin(VM)` startar skicakar den `DHCP-Discover` via default broadcast FF:FF:FF:FF:FF:FF Eftersom VM är inne i Host. Ser Host att någon skriker, och Host tänker "jag måste svara på den".  
+
+**Host Svarar: Hej VM, din `Ip:192.168.100.10/24` , DNS och Gateway : `192.168.100.1`**  
+
+VM öppnar sin browerser och skriver `example.com` som då ligger i `MOLNET`  
+
+1. Vm kollar i sitt DNS-cache och i host filen efter `example.com` `ip` address men **hittar inget**.
+2. Vm frågar sin `DNS forwader (Host)`, "vad har `example.com` för Ip?"  
+3. `DNS forwarder (Host)` skapar **`UDP,TCP`** packet (beroande på frågan storlek) och skicakr vidare frågan via sitt gateway till sitt **DNS-server**.
+4. **DNS-srver** svarar `example.com = 198.51.100.20/32`, svaret går tillbaka till Host-gateway > Host > Vm-gateway > VM vet nu att Host har `MAC: HO:ST:HO:ST:00:00 ` och sprar det i sitt ARP-tabellen, VM sparar även `example.com = 198.51.100.20/32` i sitt DNS-chache. 
+5. VM kollar finns `example.com = 198.51.100.20/32` i mitt nätverk? Svar:NEJ. 
+6. VM skapar `TCP` anslutning (packet) och skicakr det till sitt gateway `192.168.100.1` och nu händer `3 way handshake` **SYN > SYN/ACK > ACK**.  
+    - **käll Port `Dynamiska Port:`** 50000 | **Käll Ip:** 192.168.100.10/24 (Vm) | **Käll MAC:** VM:VM:VM:11:11:11 (VM).
+    - **Deti Port `välkända portar:`** 443 (HTTPS)  : **Desti Ip:** 19`8`.51.100.20 (Moln) | **Desti MAC:** HO:ST:HO:ST:00:00 (Host).  
+    - **TTL** = 64
+    
+  7. **VIKTIGT:** Packet påväg till Moln. `Dest IP stannar samma` **men** `Destination MAC ändras` hela tiden till näst kommande Hopp MAC.  
+  8. **Väg ditt:** Packet > Vm-gateway > Host > Host-gateway (Router)> internet > Router Moln > Moln Server.
+  9. **Väg tillbaka:** Moln Server > Router Moln > internet > Host-gateway (Router) > Host > Vm-gateway > Vm 
+    
+//Bilal Al Ali
