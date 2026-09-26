@@ -1,4 +1,4 @@
-# Moment A: Avancerad Nätverksanalys &amp; Trafikflöden (Mål 3)  
+# VG-Uppgiften (Del A): Avancerad Nätverksanalys & Trafikflöden (Mål 3).  
 
 **Jag ska rita och förklara ett komplett datatrafikflöde från en klient i labbmiljön,
 genom lokalt subnät, via gateway/router och DNS-uppslagning, ända fram till en målserver i

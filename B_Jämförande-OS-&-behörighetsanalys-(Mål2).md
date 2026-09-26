@@ -1,6 +1,8 @@
-### Uppgiten säger att jag ska jobba i **Windows/Linux** och skapa 2 grupper med olika behörigheter, med tanke på **arv**.
+# VG-Uppgiften (Del B) : Jämförande OS & Behörighetsanalys (Mål 2).
 
-***Jag delade upp det i 5 steg...***  
+Jag ska demostrera i **Windows/Linux** och skapa 2 grupper med olika behörigheter, med tanke på **arv**.
+
+### ***Jag delade upp det i 5 steg...***  
 
 ***steg 1:* Skapa Users**  
 - Alice  
@@ -34,7 +36,7 @@
 ***  
 ***
 
-### Windows:  
+# Windows 🖥️⬇️
 
 **Förklarar kommando Windows**  
 - **icacls :** Verktyg i windows som styr behörighertna på filer och mappar.
@@ -46,7 +48,7 @@
 ***  
 
 
-***steg 1:* Skapa Users**
+### ***steg 1:* Skapa Users**
 - Alice  
 - Bob  
 
@@ -87,7 +89,7 @@ net user bob bob/add #skapar användare bob som har lösenordet bob
 
 
 
-***steg 2:* Skapa Grupperna och lägger till Users i Grupperna**  
+### ***steg 2:* Skapa Grupperna och lägger till Users i Grupperna**  
 - g_ledare (Alice) 
 - g_personal (Bob)  
 
@@ -140,7 +142,7 @@ net localgroup #[gruppens namn] #visar vilka finns i gruppen.
 
 
 
-***steg 3:* Skapa filen Projekt med två undermappar *(Ledning, Gemensamt)***  
+### ***steg 3:* Skapa filen Projekt med två undermappar *(Ledning, Gemensamt)***  
 - Projekt  
   - Ledning  
   - Gemensamt  
@@ -168,7 +170,7 @@ c:\Projekt> mkdir Ledning
 
 
 
-***steg 4:* Tilldela rätt Åtkomast enligt `arv`**  
+### ***steg 4:* Tilldela rätt Åtkomast enligt `arv`**  
 - ***Ledning***  
   - g_ledare (Alice)(Läsa/skriva)  
   - g_personal (bob)**(Ingen åtkomst)**  
@@ -227,7 +229,7 @@ icacls c:\Projekt\Ledning /deny g_personal:(OI)(CI)F
 ![Rätta åtkomst för bob](Bilder/image-5.png)  
 ***  
 
-***steg 5:* Testa så att rätt grupp fått rätt åtkomst : JA/NEJ**  
+### ***steg 5:* Testa så att rätt grupp fått rätt åtkomst : JA/NEJ**  
 
 **Bob får inte komma in på `/Ledning` filen. (Ja han har åtkomst till endast `/Gemensamt`)** 
 ![bob har rätt åtkomst nu](Bilder/image-6.png)  
@@ -237,7 +239,6 @@ icacls c:\Projekt\Ledning /deny g_personal:(OI)(CI)F
 ![Alice har rätt Åtkomst](Bilder/image-7.png)
 ***  
 ***  
-***  
 
 
 
@@ -261,7 +262,7 @@ icacls c:\Projekt\Ledning /deny g_personal:(OI)(CI)F
 
 
 
-### Linux  
+# Linux 🐧⬇️ 
 ***Förklarar Behörigheter i Linux***
 **Kommandot `ls -la` visar en detaljerad lista med filernas info, behörigheter och dolda filer.**
 
@@ -327,7 +328,7 @@ icacls c:\Projekt\Ledning /deny g_personal:(OI)(CI)F
 ***  
 
 
-***steg 1:* Skapa Users**  
+### ***steg 1:* Skapa Users**  
 - Alice  
 - Bob  
 
@@ -340,7 +341,7 @@ sudo adduser Bob #Skapar user Bob
 ![alt text](Bilder/image-61.png)
 ***  
 
-***steg 2:* Skapa Grupperna och lägger till Users i Grupperna**  
+### ***steg 2:* Skapa Grupperna och lägger till Users i Grupperna**  
 - g_ledare (Alice) 
 - g_personal (Bob)  
 ```BASH  
@@ -359,7 +360,7 @@ groups Bob #visar vilken grup Bob är med
 ![alt text](Bilder/image51.png)
 ***  
 
-***steg 3:* Skapa filen Projekt med två undermappar *(Ledning, Gemensamt)***  
+### ***steg 3:* Skapa filen Projekt med två undermappar *(Ledning, Gemensamt)***  
 - Projekt  
   - Ledning  
   - Gemensamt   
@@ -375,7 +376,7 @@ sudo mkdir -p Projekt/Gemensamt #skapde även Gemensamt filen i Projekt filen
 
 ***  
 
-***steg 4:* Tilldela rätt Åtkomast enligt `arv`**  
+### ***steg 4:* Tilldela rätt Åtkomast enligt `arv`**  
 - ***Ledning***  
   - g_ledare (Alice)(Läsa/skriva)  
   - g_personal (bob)(Ingen åtkomst)  
@@ -407,7 +408,7 @@ sudo setfacl -d -m g:g-personal:rwx /Projekt/Genomsamt
 
 ***  
 
-***steg 5:* Testa så att rätt grupp fått rätt åtkomst : JA/NEJ**
+### ***steg 5:* Testa så att rätt grupp fått rätt åtkomst : JA/NEJ**
 
 ```BASH  
 getfacl /Projekt/Ledning #Visar alla rättigheterna för filen Ledning.
